@@ -28,5 +28,7 @@ function [load_type] = detect_load(training_dir, test_dir)
     fprintf('classifying test data...');
     load_type = classify(test,training,group,'diaglinear');
     fprintf('complete');
-
+    
+    print_results(load_type);
+    
 end
