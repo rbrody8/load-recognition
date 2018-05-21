@@ -50,7 +50,11 @@ function [group] = generate_group(time,Va,Vb,Vc,Ia,Ib,Ic,listing,...
         % value associated with that type of files appropriate classifier
         tokens = split(listing(n).name, '_');
         load_type = tokens(1);
-        load_index = find(strcmp(load_str,load_type));
+        load_index = find(strcmp(load_str,load_type)); % these are the values
+                                                       % the AI will use to
+                                                       % identify which
+                                                       % component is used
+                                                       % in a given event
 
         % calculate the rms value of current waveform for each phase from 
         % pre/post_start to pre/post_end
