@@ -52,20 +52,23 @@ function [time, Va, Vb, Vc, Ia, Ib, Ic, cycles, listing] = textToArr(data_dir)
                 % that half cycle and the index at which the cycle ends.
                 % this index is saved in the cycle array, but the RMS
                 % values are of no use to us
-                if isnan(double(tokens(3))) || isnan(double(tokens(4)))||...
-                    isnan(double(tokens(5)))|| isnan(double(tokens(6)))||...
-                    isnan(double(tokens(7)))|| isnan(double(tokens(8)))
+                if isnan(str2double(tokens(3))) ||...
+                    isnan(str2double(tokens(4)))||...
+                    isnan(str2double(tokens(5)))||...
+                    isnan(str2double(tokens(6)))||...
+                    isnan(str2double(tokens(7)))||...
+                    isnan(str2double(tokens(8)))
                         cycles(cycleNum,n) = row;
                         cycleNum = cycleNum+1;
                 else
                     % storing needed values
-                    time(row,n) = double(tokens(2)); % time (nanoseconds)
-                    Va(row,n) = double(tokens(3)); % Phase A voltage (V)
-                    Vb(row,n) = double(tokens(4)); % Phase B voltage (V)
-                    Vc(row,n) = double(tokens(5)); % Phase C voltage (V)
-                    Ia(row,n) = double(tokens(6)); % Phase A current (A)
-                    Ib(row,n) = double(tokens(7)); % Phase B current (A)
-                    Ic(row,n) = double(tokens(8)); % Phase C current (A)
+                    time(row,n) = str2double(tokens(2)); % time (nanoseconds)
+                    Va(row,n) = str2double(tokens(3)); % Phase A voltage (V)
+                    Vb(row,n) = str2double(tokens(4)); % Phase B voltage (V)
+                    Vc(row,n) = str2double(tokens(5)); % Phase C voltage (V)
+                    Ia(row,n) = str2double(tokens(6)); % Phase A current (A)
+                    Ib(row,n) = str2double(tokens(7)); % Phase B current (A)
+                    Ic(row,n) = str2double(tokens(8)); % Phase C current (A)
                     
                     row=row+1;
                 end
