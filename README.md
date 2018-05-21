@@ -1,14 +1,14 @@
-### Load Recognition Algorithm
+# Load Recognition Algorithm
 
 ## Description
 This is a prototype repository for Matlab code used to detect load type based on voltage and current profiles of a house using **[nonintrusive load monitoring (NILM)](https://en.wikipedia.org/wiki/Nonintrusive_load_monitoring)**. Given a directories of training and test data, formated as text files with comma-seperated, tabulated, discrete phase voltage and current waveforms. Examples of valid test and training data can be found in the "test" and "training" folders, respectively. Seperating the files in two folders is simply an abstraction of the idea that AI needs one set of data to learn (i.e. "training") and one set of data to categorize based on what has been learned (i.e. "test"). There are no differences in formatting between the files in either folder; the files could theoretically be moved between the two folders without affecting the performance of the algorithm. Each file contains data for one "event". There are two types of events: "turn-on" events, where a load is being turned on; and "turn-off" events, where a load is being turned off. For this prototype, 
 
 ## Running the code
 If you haven't yet made your own branch of this git repository, first do so. Otherwise, simply update your local repository with a pull request (see "Git Basics" below). *detect_load.m* is the main function for this repository, and all other function files represent helper functions. *detect_load* will print a report of the results, as well as output three matrices: one containing the what load the algorithm detect, one containing the training data matrix and one containing the grouping matrix. There are two options for running *detect_load*. 
-# *detect_load* - Option 1
+### *detect_load* - Option 1
 This option will convert the training and test data from .txt files explained in "Description" into three matrices, one for the training data, one specifying the grouping (i.e. what component is on, if any, for a given column of data), and one for the test data. Each column in these matrix represents the discrete, steady-state current for a certain phase, either for or after an event. 
 Use this option when you have either never run *detect_load* before, or if you have added new files to the training data directory.
-# *detect_load* - Option 2
+### *detect_load* - Option 2
 This option will convert the test data as it did in Option 1, however in this scenario, the training and grouping matrix are passed into the function as arguments. Use this option if you have already run *detect_load* once for a given set of training data, and you saved the training and grouping matrices that it returned when you did so.
 **NOTE: Because the algorithm does not have to process all of the training data (a much larger of a dataset than the test data) each time you run the code, Option 2 will run MUCH faster. Remeber to save the training and grouping matrices when running _detect_load_ (i.e. use [load_type, training, group]=detect_load('training','test'), instead of just detect_load('training','test').**
 
@@ -16,15 +16,15 @@ For any other explanation regarding the logic behing individual functions, pleas
 
 ## Git Basics
 Here are some general steps for interacting with the repository from the command line. There are other ways of doing so, but this is my favorite because it's cross platform, and I'm used to it. **NOTE: If using the GUI inteferface, sometimes push requests don't go through immediately. Please check the remote repository online after doing so to make sure the changes went through. If they didn't, just notify the group so we know to look out for that.**
-# Step 0 - Create Your Loacal Repository (Branch)
+### Step 0 - Create Your Loacal Repository (Branch)
 **NOTE: You only need to preform this step the first time you want to use the repository.**
 Open your preferred command line interpretor, and *cd* to the directory you would like to save your local repository. Once in that repostiroy, run *git init*. That's it - no other arugments. This tells Git the location of your branch and what permissions you have. Then, to download the latest version of the remote repository (i.e. the "master" copy), run *git init https://github.com/rbrody8/load-recognition/*. If all files download successfully, skip Step 1 and move on to Step 2.
-# Step 1 - Pull the latest code from the remote repository
+### Step 1 - Pull the latest code from the remote repository
 If someone has made changes to the remote repository since the last time you've downloaded it, you'll want to use those changes. To download *and* replace the files in your local repository with the latest and greatest from the remote repository, run *git pull*. 
-# Step 2 - Edit the Code!
+### Step 2 - Edit the Code!
 Have fun with it.
 **Remember: When you are working on a portion of the code, other people can be interacting with the remote repository at the same time! Because of this, it is important that we communicate when we are going to make changes to the code and that we only work on the with the files we have told people we are working with. While two people editing a file simultaneously could be harmless, two people changing the same line of code at the same time could result in no ones work being saved, and we definitely don't want that.**
-# Step 3 - Update the remote repository with your changes
+### Step 3 - Update the remote repository with your changes
 This step has 3 parts. First, run *git add [filename]*, where *[filename]* is the the names of the files you want to update. This notifies git that there are chagnes you've made. For simplicity, I usually just run *git add *.m*.
 Then, run *git commit -m "breif description of what you changed"*. This tells git that you want to make the changes you *add*-ed official, but it does not actually make the changes official (i.e. no one else can see these changes yet). Finally, run *git push origin master*. This *push*-es all of the changes you've *commit*-ted to the remote repository. "origin" represents your local branch, and "master" represents the remote repository, so it is basically saying "push all commits from my local repository to the remote respository so everyone can use them".
 
