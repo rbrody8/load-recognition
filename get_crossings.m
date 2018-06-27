@@ -48,6 +48,13 @@ function [pre_start,pre_end,post_start,post_end]=get_crossings(time,Va,Vb,Vc)
                                       % positively-sloped zero crossing
     post_end = zeros(3, numFiles); % first positive value after first 
                                       % positively-sloped zero crossing
+                                      
+    % assuring votlage probes are polarized correctly
+    if (Va(2)<0)
+        Va = -Va;
+        Vb = -Vb;
+        Vc = -Vc;
+    end
     
     % PRE-TRANSIENT - find first positively-sloped zero crossing, store
     % index in pre_start, and store index+delta_n in pre_stop
@@ -57,18 +64,23 @@ function [pre_start,pre_end,post_start,post_end]=get_crossings(time,Va,Vb,Vc)
         % value is adjacent to a postive value.
         lastV = [Va(1,n), Vb(1,n), Vc(1,n)]; % latter of the two adjacent
                                             % voltage values to check
+        
         found_v = 0; % number of phases for which the sampling interval has
                     % has been determined       
-        for i = 2:numIndices
+        for i = 2:numIndices-1
             curV = [Va(i,n), Vb(i,n), Vc(i,n)]; % former of the two adjacent
                                                 % voltage values to check
+            nextV = [Va(i+1,n),Vb(i+1,n),Vc(i+1,n)];
+            
             for phase=1:3
                 if(curV(phase)>0 && lastV(phase)<=0)
                     if(pre_start(phase,n) == 0)
-                        pre_start(phase,n) = i;
-                        pre_end(phase,n) = i+delta_n;
-                        found_v = found_v + 1;
-                        continue;
+                        if (nextV(phase) > 0) % in the event noise crosses the time axis
+                            pre_start(phase,n) = i;
+                            pre_end(phase,n) = i+delta_n;
+                            found_v = found_v + 1;
+                            continue;
+                        end
                     end
                 end
             end
@@ -97,22 +109,26 @@ function [pre_start,pre_end,post_start,post_end]=get_crossings(time,Va,Vb,Vc)
         found_v = 0; % number of phases for which the sampling interval has
                     % has been determined    
         
-        for j = 1:(numIndices-1)
+        for j = 1:(numIndices-2)
             i = numIndices - j;
             curV = [Va(i,n), Vb(i,n), Vc(i,n)]; % former of the two adjacent
                                                 % voltage values to check
+            nextV = [Va(i-1,n),Vb(i-1,n),Vc(i-1,n)];
+            
             for phase=1:3
                 if(curV(phase)==0 && lastV(phase)==0) % ignoring zero-padding
                     continue;
                 elseif(curV(phase)<=0 && lastV(phase)>0)
                     if(post_end(phase,n) == 0)
-                        if(num_crossing(phase) == 2)
-                            post_start(phase,n) = i+1;
-                            post_end(phase,n) = post_start(phase,n)+delta_n;
-                            found_v = found_v + 1;
-                            continue;
-                        else
-                            num_crossing(phase) = num_crossing(phase)+1;
+                        if (nextV(phase) < 0) % in the event noise crosses the time axis
+                            if(num_crossing(phase) == 2)
+                                post_start(phase,n) = i+1;
+                                post_end(phase,n) = post_start(phase,n)+delta_n;
+                                found_v = found_v + 1;
+                                continue;
+                            else
+                                num_crossing(phase) = num_crossing(phase)+1;
+                            end
                         end
                     end
                 end

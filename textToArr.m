@@ -47,6 +47,24 @@ function [time, Va, Vb, Vc, Ia, Ib, Ic, cycles, listing] = textToArr(data_dir)
 
                 tokens = split(line,','); % splitting comma-seperated values
                 
+                % 6/27/2018 - it was discovered that some data files were
+                % erroneously seperated by tabs instead of by commans.
+                % Rather than recolleting data, this if statement serves as
+                % error checking for those data files:
+                % 1) see if seperating by commas generated expected number
+                % of tokens
+                % 2) split line by tabs (char(9) = ASCII tab
+                % 3) realign time stamp in array, as that field is still
+                % comma-seperated
+                if (length(tokens) == 2) % 1)
+                    tokens = split(line,char(9)); % 2)
+                    
+                    % 3)
+                    temp = split(tokens(1),',');
+                    tokens(1) = temp(2);
+                    tokens(2:(end+1))= tokens(:);
+                end
+                
                 % if any token is not a double, the dranetz has detected
                 % that a half cycle has completed and prints RMS values for
                 % that half cycle and the index at which the cycle ends.
