@@ -6,7 +6,7 @@ for i = 1:c
    test_time = test_time(1:length(test_current));
    
    del_t = test_time(2)-test_time(1);
-   del_t = del_t*10^-9;
+%    del_t = del_t*10^-9;
    
 %    std_start = std(test_current(15:12));
 %    std_end = std(test_current((end-512):end));

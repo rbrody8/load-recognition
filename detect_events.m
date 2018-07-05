@@ -35,7 +35,6 @@ N = length(time_series);
 L = 4; % cycles in window
 
 % step 3) initializing window statistics
-k=1;
 N_env = length(envelope);
 window_mean = zeros(1,N_env);
 window_std = zeros(1,N_env);
